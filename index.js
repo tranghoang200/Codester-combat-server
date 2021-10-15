@@ -1,20 +1,33 @@
-const {ApolloServer} = require('apollo-server');
-const typeDefs = require('./schema');
-const resolvers = require('./resolvers');
+'use strict';
 
-async function startApolloServer(typeDefs, resolvers) {
-  const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    dataSources: () => {},
-  });
+/*
+ * This file exports the app that is used by the server to expose the routes.
+ * And make the routes visible.
+ */
 
-  const {url, port} = await server.listen();
-  console.log(`
-      🚀  Server is running
-      🔉  Listening on port ${port}
-      📭  Query at ${url}
-    `);
-}
+const User = require('./models/schema/user');
 
-startApolloServer(typeDefs, resolvers);
+const express = require('express');
+// const cors = require('cors');
+const bodyParser = require('body-parser');
+
+// Express App
+const app = express();
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+app.use(bodyParser.json());
+
+// Use default logger for now
+// app.use(cors());
+
+// This is to check if the service is online or not
+app.use('/ping', function (req, res) {
+  res.json({ reply: 'pong' });
+  res.end();
+});
+
+// Export the express app instance
+module.exports = app;
