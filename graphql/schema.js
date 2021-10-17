@@ -10,15 +10,15 @@ const typeDefs = gql`
     name: String
     rank: Rank
     points: Int
-    createdAt: Int
-    updatedAt: Int
+    createdAt: String
+    updatedAt: String
   }
 
   type Rank {
     id: String
     name: String
-    createAt: Int
-    updateAt: Int
+    createAt: String
+    updateAt: String
   }
   type Mutation {
     createUser(name: String): User

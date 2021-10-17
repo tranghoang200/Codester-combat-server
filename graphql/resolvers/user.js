@@ -12,7 +12,8 @@ const users = async () => {
 // MUTATION
 const createUser = async (root, args, context, info) => {
   const res = await User.create(args);
-  return prepare(res.ops[0]);
+  console.log(res._id);
+  return prepare(res);
 };
 
 const updateUser = async (root, args, context, info) => {};

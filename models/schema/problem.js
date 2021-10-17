@@ -13,11 +13,11 @@ const problemSchema = new Schema({
 
   // system generated
   createdAt: {
-    type: Number,
+    type: Date,
     required: true,
     default: Date.now,
   },
-  updatedAt: { type: Number },
+  updatedAt: { type: Date },
 });
 
 const Problem = mongoose.model('Problem', problemSchema);
