@@ -2,11 +2,11 @@ const User = require('../../models/schema/user');
 const prepare = require('../../util');
 // QUERY
 const user = async (root, { _id }) => {
-  return prepare(await User.findOne(ObjectId(_id)));
+  return prepare(await User.findOne(_id));
 };
 
 const users = async () => {
-  return (await User.find({}).toArray()).map(prepare);
+  return (await User.find({})).map(prepare);
 };
 
 // MUTATION
