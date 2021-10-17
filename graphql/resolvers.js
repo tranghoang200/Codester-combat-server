@@ -1,12 +1,18 @@
-const hello = require('./resolvers/hello');
-const greet = require('./resolvers/greet');
+const champ = require('./resolvers/champ');
+const game = require('./resolvers/game');
+const player = require('./resolvers/player');
+const problem = require('./resolvers/problem');
+const { user, users, createUser, updateUser } = require('./resolvers/user');
+const { rank } = require('./resolvers/rank');
 
 const _resolvers = {
   Query: {
-    hello,
+    user,
+    users,
   },
   Mutation: {
-    greet,
+    createUser,
+    updateUser,
   },
 };
 

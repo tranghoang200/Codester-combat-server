@@ -1,5 +1,5 @@
 const { ApolloServer } = require('apollo-server-express');
-const typeDefs = require('./graphql/schema.gql');
+const typeDefs = require('./graphql/schema.js');
 const resolvers = require('./graphql/resolvers');
 const Models = require('./models');
 const ErrorHandler = require('./helpers/errorHandler.js');
@@ -36,9 +36,7 @@ const port = 8001;
 const ip = '127.0.0.1';
 
 app.listen({ port, ip }, () =>
-  console.log(
-    `🚀 Server ready at http://${ip}:${port}${apolloServer.graphqlPath}`
-  )
+  console.log(`🚀 Server ready at http://${ip}:${port}`)
 );
 
 module.exports = app;
