@@ -30,7 +30,7 @@ UserTC.addResolver({
     rank: 'String',
   },
   resolve: async ({ source, args, context, info }) => {
-    const user = await User.findOne({ name: args.name }).exec();
+    let user = await User.findOne({ name: args.name }).exec();
     if (!user)
       user = await User.create({
         name: args.name,
