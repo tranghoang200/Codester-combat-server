@@ -5,8 +5,6 @@
  * And make the routes visible.
  */
 
-const User = require('./models/schema/user');
-
 const express = require('express');
 // const cors = require('cors');
 const bodyParser = require('body-parser');

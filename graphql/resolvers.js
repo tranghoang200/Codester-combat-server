@@ -1,9 +1,4 @@
-const champ = require('./resolvers/champ');
-const game = require('./resolvers/game');
-const player = require('./resolvers/player');
-const problem = require('./resolvers/problem');
-const { user, users, createUser, updateUser } = require('./resolvers/user');
-const { rank } = require('./resolvers/rank');
+const { user, users, createUser, updateUser } = require('../schema/user');
 
 const _resolvers = {
   Query: {

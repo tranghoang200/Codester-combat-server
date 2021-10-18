@@ -1,15 +1,16 @@
 const { ApolloServer } = require('apollo-server-express');
 const typeDefs = require('./graphql/schema.js');
 const resolvers = require('./graphql/resolvers');
-const Models = require('./models');
+const Models = require('./schema');
 const ErrorHandler = require('./helpers/errorHandler.js');
 
 let apolloServer = null;
 
+const schema = require('./schema');
+
 async function startServer() {
   apolloServer = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema,
     context: async ({ req }) => {
       return {
         Models,
@@ -25,6 +26,16 @@ async function startServer() {
     app,
     // change this if you want to host schema on a different path
     path: '/',
+    cors: true,
+    onHealthCheck: () =>
+      // eslint-disable-next-line no-undef
+      new Promise((resolve, reject) => {
+        if (mongoose.connection.readyState > 0) {
+          resolve();
+        } else {
+          reject();
+        }
+      }),
   });
 }
 startServer();
