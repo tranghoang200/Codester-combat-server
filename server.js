@@ -1,6 +1,5 @@
 const { ApolloServer } = require('apollo-server-express');
 
-const Models = require('./schema');
 const ErrorHandler = require('./helpers/errorHandler.js');
 
 let apolloServer = null;
@@ -10,12 +9,7 @@ const schema = require('./schema');
 async function startServer() {
   apolloServer = new ApolloServer({
     schema,
-    context: async ({ req }) => {
-      return {
-        Models,
-        req,
-      };
-    },
+
     formatError: ErrorHandler.formatGQLError,
     introspection: true,
     playground: true,

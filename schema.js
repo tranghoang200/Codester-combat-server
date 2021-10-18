@@ -1,14 +1,14 @@
 const { SchemaComposer } = require('graphql-compose');
-const db = require('../models/db');
+const db = require('./models/db');
 
 const schemaComposer = new SchemaComposer();
 
-const { UserQuery, UserMutation } = require('./user');
-const { RankQuery, RankMutation } = require('./rank');
-const { ChampQuery, ChampMutation } = require('./champ');
-const { GameQuery, GameMutation } = require('./game');
-const { PlayerQuery, PlayerMutation } = require('./player');
-const { ProblemQuery, ProblemMutation } = require('./problem');
+const { UserQuery, UserMutation } = require('./models/user');
+const { RankQuery, RankMutation } = require('./models/rank');
+const { ChampQuery, ChampMutation } = require('./models/champ');
+const { GameQuery, GameMutation } = require('./models/game');
+const { PlayerQuery, PlayerMutation } = require('./models/player');
+const { ProblemQuery, ProblemMutation } = require('./models/problem');
 
 schemaComposer.Query.addFields({
   ...UserQuery,
