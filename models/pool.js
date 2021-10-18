@@ -3,13 +3,12 @@ const { Schema } = mongoose;
 const ObjectId = Schema.Types.ObjectId;
 const timestamps = require('mongoose-timestamp');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
+const { Rank, RankTC } = require('./rank');
 
 const poolSchema = new Schema(
   {
     user: { type: ObjectId, ref: 'User' },
-    champ: { type: ObjectId, ref: 'Champ' },
-    problems: [{ type: ObjectId, ref: 'Problem' }],
-    updatedAt: { type: Number, default: 100 },
+    rank: { type: ObjectId, ref: 'Rank' },
   },
   { collection: 'pools' }
 );
@@ -20,6 +19,30 @@ poolSchema.index({ createdAt: 1, updatedAt: 1 });
 
 const Pool = mongoose.model('Pool', poolSchema);
 const PoolTC = composeWithMongoose(Pool);
+
+PoolTC.addResolver({
+  name: 'createOne',
+  type: PoolTC.getResolver('createOne').getType(),
+  args: {
+    ...PoolTC.getResolver('createOne').getArgs(),
+    rank: 'String',
+  },
+  resolve: async ({ source, args, context, info }) => {
+    const res = Pool.create({
+      ...args.record,
+      rank: await Rank.findOne({ name: args.rank }).exec(),
+    });
+    return res;
+  },
+});
+
+PoolTC.addRelation('rank', {
+  resolver: () => RankTC.getResolver('findById'),
+  prepareArgs: {
+    _id: (source) => source.rank || [],
+  },
+  projection: { rank: true },
+});
 
 const PoolQuery = {
   poolById: PoolTC.getResolver('findById'),

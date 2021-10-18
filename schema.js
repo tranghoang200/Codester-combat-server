@@ -27,6 +27,7 @@ schemaComposer.Mutation.addFields({
   ...ChampMutation,
   ...GameMutation,
   ...PlayerMutation,
+  ...ProblemMutation,
   ...PoolMutation,
 });
 

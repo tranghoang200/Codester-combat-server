@@ -32,6 +32,7 @@ ProblemTC.addResolver({
     rank: 'String',
   },
   resolve: async ({ source, args, context, info }) => {
+    console.log(Problem);
     const res = Problem.create({
       content: args.record.content,
       testCase: {
