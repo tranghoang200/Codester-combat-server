@@ -9,6 +9,7 @@ const { ChampQuery, ChampMutation } = require('./models/champ');
 const { GameQuery, GameMutation } = require('./models/game');
 const { PlayerQuery, PlayerMutation } = require('./models/player');
 const { ProblemQuery, ProblemMutation } = require('./models/problem');
+const { PoolQuery, PoolMutation } = require('./models/pool');
 
 schemaComposer.Query.addFields({
   ...UserQuery,
@@ -17,6 +18,7 @@ schemaComposer.Query.addFields({
   ...GameQuery,
   ...PlayerQuery,
   ...ProblemQuery,
+  ...PoolQuery,
 });
 
 schemaComposer.Mutation.addFields({
@@ -25,7 +27,7 @@ schemaComposer.Mutation.addFields({
   ...ChampMutation,
   ...GameMutation,
   ...PlayerMutation,
-  ...ProblemMutation,
+  ...PoolMutation,
 });
 
 module.exports = schemaComposer.buildSchema();

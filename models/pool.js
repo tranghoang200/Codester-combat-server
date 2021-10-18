@@ -22,24 +22,24 @@ const Pool = mongoose.model('Pool', poolSchema);
 const PoolTC = composeWithMongoose(Pool);
 
 const PoolQuery = {
-  playerById: PoolTC.getResolver('findById'),
-  playerByIds: PoolTC.getResolver('findByIds'),
-  playerOne: PoolTC.getResolver('findOne'),
-  playerMany: PoolTC.getResolver('findMany'),
-  playerCount: PoolTC.getResolver('count'),
-  playerConnection: PoolTC.getResolver('connection'),
+  poolById: PoolTC.getResolver('findById'),
+  poolByIds: PoolTC.getResolver('findByIds'),
+  poolOne: PoolTC.getResolver('findOne'),
+  poolMany: PoolTC.getResolver('findMany'),
+  poolCount: PoolTC.getResolver('count'),
+  poolConnection: PoolTC.getResolver('connection'),
   PoolPagination: PoolTC.getResolver('pagination'),
 };
 
 const PoolMutation = {
-  playerCreateOne: PoolTC.getResolver('createOne'),
-  playerCreateMany: PoolTC.getResolver('createMany'),
-  playerUpdateById: PoolTC.getResolver('updateById'),
-  playerUpdateOne: PoolTC.getResolver('updateOne'),
-  playerUpdateMany: PoolTC.getResolver('updateMany'),
-  playerRemoveById: PoolTC.getResolver('removeById'),
-  playerRemoveOne: PoolTC.getResolver('removeOne'),
-  playerRemoveMany: PoolTC.getResolver('removeMany'),
+  poolCreateOne: PoolTC.getResolver('createOne'),
+  poolCreateMany: PoolTC.getResolver('createMany'),
+  poolUpdateById: PoolTC.getResolver('updateById'),
+  poolUpdateOne: PoolTC.getResolver('updateOne'),
+  poolUpdateMany: PoolTC.getResolver('updateMany'),
+  poolRemoveById: PoolTC.getResolver('removeById'),
+  poolRemoveOne: PoolTC.getResolver('removeOne'),
+  poolRemoveMany: PoolTC.getResolver('removeMany'),
 };
 
 module.exports = {
