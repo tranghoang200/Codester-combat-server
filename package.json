@@ -5,7 +5,8 @@
   "author": "Trang Hoang",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "apollo-server": "^3.4.0",
