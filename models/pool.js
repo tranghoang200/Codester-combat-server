@@ -60,9 +60,13 @@ PoolTC.addResolver({
     user: 'String',
   },
   resolve: async ({ source, args, context, info }) => {
-    const res = Pool.findByIdAndUpdate(args._id, {
-      $pullAll: { users: [args.user] },
-    });
+    const res = Pool.findByIdAndUpdate(
+      args._id,
+      {
+        $pull: { users: { _id: args.user } },
+      },
+      { safe: true, multi: true }
+    );
     return res;
   },
 });

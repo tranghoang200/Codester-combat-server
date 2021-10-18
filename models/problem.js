@@ -32,13 +32,10 @@ ProblemTC.addResolver({
     rank: 'String',
   },
   resolve: async ({ source, args, context, info }) => {
-    console.log(Problem);
+    console.log(args.record.input);
     const res = Problem.create({
       content: args.record.content,
-      testCase: {
-        input: args.record.input,
-        output: args.record.output,
-      },
+      testCase: args.record.testCase,
       rank: await Rank.findOne({ name: args.rank }).exec(),
     });
     return res;

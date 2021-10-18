@@ -3,12 +3,16 @@ const { Schema } = mongoose;
 const ObjectId = Schema.Types.ObjectId;
 const timestamps = require('mongoose-timestamp');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
+const { User, UserTC } = require('./user');
+const { Champ, ChampTC } = require('./champ');
+const { Problem } = require('./problem');
 
 const playerSchema = new Schema(
   {
     user: { type: ObjectId, ref: 'User' },
     champ: { type: ObjectId, ref: 'Champ' },
     problems: [{ type: ObjectId, ref: 'Problem' }],
+    health: { type: Number, default: 100 },
     updatedAt: { type: Number, default: 100 },
   },
   { collection: 'players' }
@@ -20,6 +24,41 @@ playerSchema.index({ createdAt: 1, updatedAt: 1 });
 
 const Player = mongoose.model('Player', playerSchema);
 const PlayerTC = composeWithMongoose(Player);
+
+PlayerTC.addResolver({
+  name: 'createOne',
+  type: PlayerTC.getResolver('createOne').getType(),
+  args: {
+    user: 'String',
+    champ: 'String',
+    problems: '[String]',
+  },
+  resolve: async ({ source, args, context, info }) => {
+    console.log(args.player1);
+    const res = Player.create({
+      user: await User.findById(args.user).exec(),
+      champ: await Champ.findById(args.champ).exec(),
+      problem: await Problem.find({ _id: { $in: args.problems } }),
+    });
+    return res;
+  },
+});
+
+PlayerTC.addRelation('user', {
+  resolver: () => UserTC.getResolver('findById'),
+  prepareArgs: {
+    _id: (source) => source.user || [],
+  },
+  projection: { user: true },
+});
+
+PlayerTC.addRelation('champ', {
+  resolver: () => ChampTC.getResolver('findById'),
+  prepareArgs: {
+    _id: (source) => source.champ || [],
+  },
+  projection: { champ: true },
+});
 
 const PlayerQuery = {
   playerById: PlayerTC.getResolver('findById'),
