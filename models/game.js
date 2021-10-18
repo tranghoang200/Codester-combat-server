@@ -35,14 +35,15 @@ GameTC.addResolver({
     problems: '[String]',
   },
   resolve: async ({ source, args, context, info }) => {
-    console.log(await Problem.find({ _id: { $in: args.problems } }).exec());
-    const res = Game.create({
+    const game = Game.create({
       player1: await Player.findById(args.player1).exec(),
       player2: await Player.findById(args.player2).exec(),
       problems: await Problem.find({ _id: { $in: args.problems } }).exec(),
       rank: await Rank.findOne({ name: args.rank }).exec(),
     });
-    return res;
+    return {
+      record: game,
+    };
   },
 });
 

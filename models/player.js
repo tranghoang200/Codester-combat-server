@@ -34,13 +34,14 @@ PlayerTC.addResolver({
     problems: '[String]',
   },
   resolve: async ({ source, args, context, info }) => {
-    console.log(args.player1);
-    const res = Player.create({
+    const player = Player.create({
       user: await User.findById(args.user).exec(),
       champ: await Champ.findById(args.champ).exec(),
       problem: await Problem.find({ _id: { $in: args.problems } }),
     });
-    return res;
+    return {
+      record: player,
+    };
   },
 });
 

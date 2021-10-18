@@ -30,13 +30,34 @@ UserTC.addResolver({
     rank: 'String',
   },
   resolve: async ({ source, args, context, info }) => {
-    const res = User.create({
-      name: args.name,
-      rank: await Rank.findOne({ name: args.rank }).exec(),
-    });
-    return res;
+    const user = await User.findOne({ name: args.name }).exec();
+    if (!user)
+      user = await User.create({
+        name: args.name,
+        rank: await Rank.findOne({ name: args.rank }).exec(),
+      });
+
+    return {
+      record: user,
+    };
   },
 });
+
+// UserTC.addResolver({
+//   name: 'updateOne',
+//   type: UserTC.getResolver('createOne').getType(),
+//   args: {
+//     name: 'String',
+//     rank: 'String',
+//   },
+//   resolve: async ({ source, args, context, info }) => {
+//     const res = User.findByIdAndUpdate({
+//       name: args.name,
+//       rank: await Rank.findOne({ name: args.rank }).exec(),
+//     });
+//     return res;
+//   },
+// });
 
 UserTC.addRelation('rank', {
   resolver: () => RankTC.getResolver('findById'),

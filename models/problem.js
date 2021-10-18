@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 const ObjectId = Schema.Types.ObjectId;
 const timestamps = require('mongoose-timestamp');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
-const { Rank } = require('./rank');
+const { Rank, RankTC } = require('./rank');
 
 const problemSchema = new Schema(
   {
@@ -32,14 +32,23 @@ ProblemTC.addResolver({
     rank: 'String',
   },
   resolve: async ({ source, args, context, info }) => {
-    console.log(args.record.input);
-    const res = Problem.create({
+    const problem = Problem.create({
       content: args.record.content,
       testCase: args.record.testCase,
       rank: await Rank.findOne({ name: args.rank }).exec(),
     });
-    return res;
+    return {
+      record: problem,
+    };
   },
+});
+
+ProblemTC.addRelation('rank', {
+  resolver: () => RankTC.getResolver('findById'),
+  prepareArgs: {
+    _id: (source) => source.rank || [],
+  },
+  projection: { rank: true },
 });
 
 const ProblemQuery = {

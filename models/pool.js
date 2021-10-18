@@ -45,10 +45,12 @@ PoolTC.addResolver({
     user: 'String',
   },
   resolve: async ({ source, args, context, info }) => {
-    const res = Pool.findByIdAndUpdate(args._id, {
+    const pool = Pool.findByIdAndUpdate(args._id, {
       $push: { users: await User.findById(args.user).exec() },
     });
-    return res;
+    return {
+      record: pool,
+    };
   },
 });
 
@@ -92,17 +94,17 @@ const PoolQuery = {
   poolByIds: PoolTC.getResolver('findByIds'),
   poolOne: PoolTC.getResolver('findOne'),
   poolMany: PoolTC.getResolver('findMany'),
-  poolCount: PoolTC.getResolver('count'),
-  poolConnection: PoolTC.getResolver('connection'),
-  PoolPagination: PoolTC.getResolver('pagination'),
+  // poolCount: PoolTC.getResolver('count'),
+  // poolConnection: PoolTC.getResolver('connection'),
+  // PoolPagination: PoolTC.getResolver('pagination'),
 };
 
 const PoolMutation = {
   poolCreateOne: PoolTC.getResolver('createOne'),
-  poolCreateMany: PoolTC.getResolver('createMany'),
+  // poolCreateMany: PoolTC.getResolver('createMany'),
   poolUpdateById: PoolTC.getResolver('updateById'),
   poolUpdateOne: PoolTC.getResolver('updateOne'),
-  poolUpdateMany: PoolTC.getResolver('updateMany'),
+  // poolUpdateMany: PoolTC.getResolver('updateMany'),
   poolRemoveById: PoolTC.getResolver('removeById'),
   poolRemoveOne: PoolTC.getResolver('removeOne'),
   poolRemoveMany: PoolTC.getResolver('removeMany'),
