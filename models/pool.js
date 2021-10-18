@@ -4,10 +4,11 @@ const ObjectId = Schema.Types.ObjectId;
 const timestamps = require('mongoose-timestamp');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
 const { Rank, RankTC } = require('./rank');
+const { User, UserTC } = require('./user');
 
 const poolSchema = new Schema(
   {
-    user: { type: ObjectId, ref: 'User' },
+    users: [{ type: ObjectId, ref: 'User' }],
     rank: { type: ObjectId, ref: 'Rank' },
   },
   { collection: 'pools' }
@@ -36,12 +37,50 @@ PoolTC.addResolver({
   },
 });
 
+PoolTC.addResolver({
+  name: 'updateById',
+  type: PoolTC.getResolver('updateById').getType(),
+  args: {
+    ...PoolTC.getResolver('updateById').getArgs(),
+    user: 'String',
+  },
+  resolve: async ({ source, args, context, info }) => {
+    const res = Pool.findByIdAndUpdate(args._id, {
+      $push: { users: await User.findById(args.user).exec() },
+    });
+    return res;
+  },
+});
+
+PoolTC.addResolver({
+  name: 'removeUserInPoolById',
+  type: PoolTC.getResolver('updateById').getType(),
+  args: {
+    _id: 'String',
+    user: 'String',
+  },
+  resolve: async ({ source, args, context, info }) => {
+    const res = Pool.findByIdAndUpdate(args._id, {
+      $pullAll: { users: [args.user] },
+    });
+    return res;
+  },
+});
+
 PoolTC.addRelation('rank', {
   resolver: () => RankTC.getResolver('findById'),
   prepareArgs: {
     _id: (source) => source.rank || [],
   },
   projection: { rank: true },
+});
+
+PoolTC.addRelation('users', {
+  resolver: () => UserTC.getResolver('findByIds'),
+  prepareArgs: {
+    _ids: (source) => source.users || [],
+  },
+  projection: { users: true },
 });
 
 const PoolQuery = {
@@ -63,6 +102,7 @@ const PoolMutation = {
   poolRemoveById: PoolTC.getResolver('removeById'),
   poolRemoveOne: PoolTC.getResolver('removeOne'),
   poolRemoveMany: PoolTC.getResolver('removeMany'),
+  poolRemoveUserInPoolById: PoolTC.getResolver('removeUserInPoolById'),
 };
 
 module.exports = {
