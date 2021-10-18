@@ -29,11 +29,13 @@ PoolTC.addResolver({
     rank: 'String',
   },
   resolve: async ({ source, args, context, info }) => {
-    const res = Pool.create({
+    const pool = Pool.create({
       ...args.record,
       rank: await Rank.findOne({ name: args.rank }).exec(),
     });
-    return res;
+    return {
+      record: pool,
+    };
   },
 });
 
@@ -62,14 +64,16 @@ PoolTC.addResolver({
     user: 'String',
   },
   resolve: async ({ source, args, context, info }) => {
-    const res = Pool.findByIdAndUpdate(
+    const pool = Pool.findByIdAndUpdate(
       args._id,
       {
         $pull: { users: { _id: args.user } },
       },
       { safe: true, multi: true }
     );
-    return res;
+    return {
+      record: pool,
+    };
   },
 });
 
